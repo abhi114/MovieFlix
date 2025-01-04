@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, Dimensions, Platform, Image } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, Dimensions, Platform, Image, StatusBar } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { ChevronLeftIcon,  } from 'react-native-heroicons/outline';
@@ -6,6 +6,7 @@ import {  HeartIcon } from 'react-native-heroicons/solid';
 import { styles, theme } from '../theme';
 import LinearGradient from 'react-native-linear-gradient';
 import Cast from './cast';
+import MovieList from './MovieList';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const ios = Platform.OS == 'ios';
 const topMargin = ios?'':'mt-15'
@@ -14,6 +15,7 @@ const MovieDetails = () => {
     const [isFav,toggleFav] = useState(false);
     const navigation = useNavigation();
     const [cast,setCast] = useState([1,2,3,4,5]);
+    const [similarMovies,setsimilarMovies] = useState([1,2,3,4,5]);
     const movieName = 'Avengers:Endgame'
     useEffect(()=>{
         //call the movie details api
@@ -21,6 +23,7 @@ const MovieDetails = () => {
   return (
     <ScrollView contentContainerStyle={{paddingBottom:35,}} className={"flex-1 bg-neutral-900 h-full "+topMargin}>
         {/* back button and movie poster */}
+        <StatusBar backgroundColor={"rgba(23,23,23,1)"} barStyle="light-content"/>
         <View className="w-full">
         <SafeAreaView className={"absolute z-20 w-full flex-row justify-between items-center px-4 "+topMargin} style={{marginTop:ios?0:25}}>
                     <TouchableOpacity onPress={()=>navigation.goBack()} style={styles.background} className="rounded-xl p-1 justify-center items-center">
@@ -65,7 +68,8 @@ const MovieDetails = () => {
                 </Text>
         </View>
         <Cast navigation={navigation} cast={cast}/>
-
+        {/* similar movies */}
+        <MovieList title="Similar Movies" hideSeeAll={true} data={similarMovies}/>
     </ScrollView>
   )
 }

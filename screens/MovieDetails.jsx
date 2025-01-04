@@ -5,6 +5,7 @@ import { ChevronLeftIcon,  } from 'react-native-heroicons/outline';
 import {  HeartIcon } from 'react-native-heroicons/solid';
 import { styles, theme } from '../theme';
 import LinearGradient from 'react-native-linear-gradient';
+import Cast from './cast';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const ios = Platform.OS == 'ios';
 const topMargin = ios?'':'mt-15'
@@ -12,6 +13,7 @@ const MovieDetails = () => {
     const {params:item} = useRoute();
     const [isFav,toggleFav] = useState(false);
     const navigation = useNavigation();
+    const [cast,setCast] = useState([1,2,3,4,5]);
     const movieName = 'Avengers:Endgame'
     useEffect(()=>{
         //call the movie details api
@@ -58,7 +60,11 @@ const MovieDetails = () => {
                     </Text>
                 </View>
                 {/* description */}
+                <Text className="text-neutral-400 mx-4 tracking-wide">
+                    Avengers: Endgame is a 2019 Marvel Studios film that concludes the Marvel Cinematic Universe's Infinity Saga. The movie is about the Avengers attempting to restore balance to the universe after Thanos' actions in Avengers: Infinity War. 
+                </Text>
         </View>
+        <Cast navigation={navigation} cast={cast}/>
 
     </ScrollView>
   )

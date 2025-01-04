@@ -12,6 +12,7 @@ const MovieDetails = () => {
     const {params:item} = useRoute();
     const [isFav,toggleFav] = useState(false);
     const navigation = useNavigation();
+    const movieName = 'Avengers:Endgame'
     useEffect(()=>{
         //call the movie details api
     },[item])
@@ -34,6 +35,29 @@ const MovieDetails = () => {
                 end={{x:0.5,y:1}}
                 className="absolute bottom-0"/>
             </View>
+        </View>
+        {/* movie details */}
+        <View style={{marginTop:-(SCREEN_HEIGHT*0.09)}} className="space-y-3">
+                <Text className="text-white text-center text-3xl font-bold tracking-wider">
+                     {movieName}
+                </Text>
+                {/* status , release data and runtime */}
+                <Text className="text-neutral-400 font-semibold text-base text-center">
+                    Released • 2020 • 170 min
+                </Text>
+                {/* genres */}
+                <View className="flex-row justify-center mx-4 space-x-2">
+                    <Text className="text-neutral-400 font-semibold text-base text-center">
+                        Action •
+                    </Text>
+                    <Text className="text-neutral-400 font-semibold text-base text-center">
+                        Thrill •
+                    </Text>
+                    <Text className="text-neutral-400 font-semibold text-base text-center">
+                        Comedy
+                    </Text>
+                </View>
+                {/* description */}
         </View>
 
     </ScrollView>

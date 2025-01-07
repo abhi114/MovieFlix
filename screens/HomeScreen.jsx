@@ -5,11 +5,13 @@ import { styles } from '../theme';
 import TrendingMovies from './TrendingMovies';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import MovieList from './MovieList';
+import { useNavigation } from '@react-navigation/native';
 const ios = Platform.OS === 'ios';
 const HomeScreen = () => {
   const [trending,settrending]= useState([1,2,3]);
   const [upcoming,setupcoming]= useState([1,2,3]);
   const [topRated,settopRated]= useState([1,2,3]);
+  const navigation = useNavigation();
   return (
     <View className="flex-1 bg-neutral-800">
       <SafeAreaView className={ios?"-mb-2":'mb-3'}>
@@ -19,7 +21,7 @@ const HomeScreen = () => {
         <Text className="text-white text-2xl font-bold">
             <Text style={styles.text}>M</Text>ovies<Text style={styles.text}>F</Text>lex
             </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate("SearchScreen")}>
             <MagnifyingGlassIcon size={30} strokeWidth={2} color={"white"}/>
         </TouchableOpacity>
         </View>
@@ -28,7 +30,7 @@ const HomeScreen = () => {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 10}}> 
           <TrendingMovies data={trending}/>
           <MovieList title="Upcoming" data={upcoming}/>
-          <MovieList title="Top Rated" data={upcoming}/>
+          <MovieList title="Top Rated" data={topRated}/>
       </ScrollView>
     </View>
   )

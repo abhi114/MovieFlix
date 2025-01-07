@@ -6,11 +6,13 @@ import TrendingMovies from './TrendingMovies';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import MovieList from './MovieList';
 import { useNavigation } from '@react-navigation/native';
+import LoadingScreen from './LoadingScreen';
 const ios = Platform.OS === 'ios';
 const HomeScreen = () => {
   const [trending,settrending]= useState([1,2,3]);
   const [upcoming,setupcoming]= useState([1,2,3]);
   const [topRated,settopRated]= useState([1,2,3]);
+  const [loading,setLoading]= useState(false);
   const navigation = useNavigation();
   return (
     <View className="flex-1 bg-neutral-800">
@@ -26,12 +28,15 @@ const HomeScreen = () => {
         </TouchableOpacity>
         </View>
       </SafeAreaView>
-      
+      {loading? (
+        <LoadingScreen/>
+      ):
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 10}}> 
           <TrendingMovies data={trending}/>
           <MovieList title="Upcoming" data={upcoming}/>
           <MovieList title="Top Rated" data={topRated}/>
-      </ScrollView>
+      </ScrollView>}
+      
     </View>
   )
 }

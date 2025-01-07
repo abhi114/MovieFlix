@@ -7,6 +7,7 @@ import { styles, theme } from '../theme';
 import LinearGradient from 'react-native-linear-gradient';
 import Cast from './cast';
 import MovieList from './MovieList';
+import LoadingScreen from './LoadingScreen';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const ios = Platform.OS == 'ios';
 const topMargin = ios?'':'mt-15'
@@ -16,6 +17,7 @@ const MovieDetails = () => {
     const navigation = useNavigation();
     const [cast,setCast] = useState([1,2,3,4,5]);
     const [similarMovies,setsimilarMovies] = useState([1,2,3,4,5]);
+    const [loading,setLoading]= useState(false);
     const movieName = 'Avengers:Endgame'
     useEffect(()=>{
         //call the movie details api
@@ -33,13 +35,20 @@ const MovieDetails = () => {
                         <HeartIcon size={35} color={isFav?theme.background:'white'}/>
                     </TouchableOpacity>
             </SafeAreaView>
-            <View>
+            {
+                loading?(
+                    <LoadingScreen/>
+                ):(
+                <View>
                 <Image source={require('../components/avengers.jpg')} style={{width:SCREEN_WIDTH,height:SCREEN_HEIGHT*0.55}}/>
                 <LinearGradient colors={['transparent','rgba(23,23,23,0.8)','rgba(23,23,23,1)']} style={{width:SCREEN_WIDTH,height:SCREEN_HEIGHT*0.30}}
                 start={{x:0.5,y:0}}
                 end={{x:0.5,y:1}}
                 className="absolute bottom-0"/>
-            </View>
+             </View>
+                )
+            }
+            
         </View>
         {/* movie details */}
         <View style={{marginTop:-(SCREEN_HEIGHT*0.09)}} className="space-y-3">

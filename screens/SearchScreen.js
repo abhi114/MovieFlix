@@ -2,6 +2,7 @@ import { View, Text, Dimensions, SafeAreaView, TextInput, TouchableOpacity, Scro
 import React, { useState } from 'react'
 import { XMarkIcon } from 'react-native-heroicons/outline';
 import { useNavigation } from '@react-navigation/native';
+import LoadingScreen from './LoadingScreen';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 
@@ -9,6 +10,7 @@ const SearchScreen = () => {
     const navigation = useNavigation();
     const [results, setResults] = useState([]);
     let movieName = "Avengers: Endgame";
+    const [loading,setLoading]= useState(false);
     return (
         <SafeAreaView className="bg-neutral-800 flex-1">
             <View className="mx-4 mb-3 flex-row justify-between items-center border border-neutral-500 rounded-full mt-5">
@@ -25,7 +27,10 @@ const SearchScreen = () => {
         
             </View>
             {/* results */}
-            {results.length>0 ? (
+            {loading?(
+              <LoadingScreen/>
+            ): (
+              results.length>0 ? (
                      <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{paddingHorizontal:15}}
             className="space-y-3">
                 <Text className='text-white font-semibold ml-1'>Results ({results.length})</Text>
@@ -55,7 +60,9 @@ const SearchScreen = () => {
                 <View className="flex-row justify-center">
                     <Image source={require("../components/movieTime4.png")} className="h-80 w-80" style={{resizeMode:'contain'}}/>
                 </View>
+            )
             )}
+            
            
             </SafeAreaView>
   );

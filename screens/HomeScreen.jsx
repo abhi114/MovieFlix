@@ -1,5 +1,5 @@
 import { View, Text, Platform, StatusBar, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Bars3CenterLeftIcon, MagnifyingGlassIcon} from 'react-native-heroicons/outline';
 import { styles } from '../theme';
 import TrendingMovies from './TrendingMovies';
@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import MovieList from './MovieList';
 import { useNavigation } from '@react-navigation/native';
 import LoadingScreen from './LoadingScreen';
+import { fetchTrendingMovies } from '../api/movieDb';
 const ios = Platform.OS === 'ios';
 const HomeScreen = () => {
   const [trending,settrending]= useState([1,2,3]);
@@ -14,6 +15,16 @@ const HomeScreen = () => {
   const [topRated,settopRated]= useState([1,2,3]);
   const [loading,setLoading]= useState(false);
   const navigation = useNavigation();
+
+  useEffect(()=>{
+    //getTrendingMovies();
+    console.log("hi")
+  },[])
+  const getTrendingMovies = async()=>{
+    const data = await fetchTrendingMovies();
+    console.log('got trending Movies' + JSON.stringify(data));
+    if(data && data.results){}
+  }
   return (
     <View className="flex-1 bg-neutral-800">
       <SafeAreaView className={ios?"-mb-2":'mb-3'}>

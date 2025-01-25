@@ -3,13 +3,14 @@ import React, { useRef } from 'react';
 import Carousel from 'react-native-reanimated-carousel';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { image500 } from '../api/movieDb';
 
 // Get screen dimensions
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 // Calculate responsive dimensions
 const CARD_WIDTH = SCREEN_WIDTH * 0.7;  // 70% of screen width
-const CARD_HEIGHT = SCREEN_HEIGHT * 0.4; // 40% of screen height
+const CARD_HEIGHT = SCREEN_HEIGHT * 0.5; // 40% of screen height
 
 const TrendingMovies = ({ data }) => {
     const navigation = useNavigation();
@@ -63,6 +64,7 @@ const TrendingMovies = ({ data }) => {
 
 const MovieCard = ({ item ,handleClick}) => {
   // Handle image loading error with a backup image
+  console.log("poster path" + item.poster_path)
   const onImageError = (error) => {
     console.log('Image loading error:', error);
   };
@@ -79,7 +81,7 @@ const MovieCard = ({ item ,handleClick}) => {
     >
       <Image
         source={item.poster_path 
-          ? { uri: item.poster_path }
+          ? { uri: image500(item.poster_path) }
           : require('../components/avengers.jpg')
         }
         onError={onImageError}

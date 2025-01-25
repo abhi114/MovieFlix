@@ -10,20 +10,25 @@ import LoadingScreen from './LoadingScreen';
 import { fetchTrendingMovies } from '../api/movieDb';
 const ios = Platform.OS === 'ios';
 const HomeScreen = () => {
-  const [trending,settrending]= useState([1,2,3]);
+  const [trending,settrending]= useState([]);
   const [upcoming,setupcoming]= useState([1,2,3]);
   const [topRated,settopRated]= useState([1,2,3]);
-  const [loading,setLoading]= useState(false);
+  const [loading,setLoading]= useState(true);
   const navigation = useNavigation();
 
   useEffect(()=>{
     //getTrendingMovies();
-    console.log("hi")
+    //console.log("hi")
   },[])
   const getTrendingMovies = async()=>{
+    //console.log("hit here")
     const data = await fetchTrendingMovies();
     console.log('got trending Movies' + JSON.stringify(data));
-    if(data && data.results){}
+    if(data && data.results){
+      settrending(data.results);
+
+    }
+    setLoading(false);
   }
   return (
     <View className="flex-1 bg-neutral-800">
@@ -43,7 +48,7 @@ const HomeScreen = () => {
         <LoadingScreen/>
       ):
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 10}}> 
-          <TrendingMovies data={trending}/>
+          {trending.length>0 && <TrendingMovies data={trending}/>}
           <MovieList title="Upcoming" data={upcoming}/>
           <MovieList title="Top Rated" data={topRated}/>
       </ScrollView>}

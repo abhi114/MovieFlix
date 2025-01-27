@@ -7,28 +7,49 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import MovieList from './MovieList';
 import { useNavigation } from '@react-navigation/native';
 import LoadingScreen from './LoadingScreen';
-import { fetchTrendingMovies } from '../api/movieDb';
+import { fetchTopRatedMovies, fetchTrendingMovies, fetchUpcomingMovies } from '../api/movieDb';
 const ios = Platform.OS === 'ios';
 const HomeScreen = () => {
   const [trending,settrending]= useState([]);
-  const [upcoming,setupcoming]= useState([1,2,3]);
-  const [topRated,settopRated]= useState([1,2,3]);
+  const [upcoming,setupcoming]= useState([]);
+  const [topRated,settopRated]= useState([]);
   const [loading,setLoading]= useState(true);
   const navigation = useNavigation();
 
   useEffect(()=>{
     //getTrendingMovies();
+    //getUpcomingMovies();
+    //getTopRatedMovies();
     //console.log("hi")
   },[])
   const getTrendingMovies = async()=>{
     //console.log("hit here")
     const data = await fetchTrendingMovies();
-    console.log('got trending Movies' + JSON.stringify(data));
+    //console.log('got trending Movies' + JSON.stringify(data));
     if(data && data.results){
       settrending(data.results);
 
     }
     setLoading(false);
+  }
+   const getUpcomingMovies = async()=>{
+    //console.log("hit here")
+    const data = await fetchUpcomingMovies();
+    console.log('got upcoming Movies' + JSON.stringify(data));
+    if(data && data.results){
+      setupcoming(data.results);
+
+    }
+    
+  }
+   const getTopRatedMovies = async()=>{
+    //console.log("hit here")
+    const data = await fetchTopRatedMovies();
+    console.log('got topRated Movies' + JSON.stringify(data));
+    if(data && data.results){
+      settopRated(data.results);
+
+    }
   }
   return (
     <View className="flex-1 bg-neutral-800">

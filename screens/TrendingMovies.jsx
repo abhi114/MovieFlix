@@ -1,74 +1,56 @@
-import { View, Text, TouchableOpacity, Image, Dimensions, ScrollView } from 'react-native';
-import React, { useRef } from 'react';
-import Carousel from 'react-native-reanimated-carousel';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import React from 'react';
+import { View, Text, TouchableOpacity, Dimensions, FlatList } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { image500 } from '../api/movieDb';
 
-// Get screen dimensions
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-
-// Calculate responsive dimensions
-const CARD_WIDTH = SCREEN_WIDTH * 0.7;  // 70% of screen width
-const CARD_HEIGHT = SCREEN_HEIGHT * 0.5; // 40% of screen height
+const CARD_WIDTH = SCREEN_WIDTH * 0.7;
+const CARD_HEIGHT = SCREEN_HEIGHT * 0.5;
 
 const TrendingMovies = ({ data }) => {
-    const navigation = useNavigation();
-  const carouselRef = useRef(null);
-    const handleClick = (item)=>{
-        navigation.navigate('MovieDetails',item);
-    }
-  return (
-    
-      <View style={{ marginBottom: 5 }}>
-        <Text 
-          style={{ 
-            color: 'white',
-            fontSize: 18,
-            marginHorizontal: 16,
-            marginBottom: 2
-          }}
-        >
-          Trending
-        </Text>
+  const navigation = useNavigation();
 
-        <Carousel
-          ref={carouselRef}
-          loop={true}
-          autoPlay={true}
-          autoPlayInterval={5000}
-          width={CARD_WIDTH}
-          height={CARD_HEIGHT}
-          data={data}
-          panGestureHandlerProps={{
-          activeOffsetX: [-10, 10], // Helps control swipe sensitivity
+  const handleClick = (item) => {
+    navigation.navigate('MovieDetails', item);
+  };
+
+  const renderItem = ({ item }) => (
+    <MovieCard item={item} handleClick={() => handleClick(item)} />
+  );
+
+  return (
+    <View style={{ marginBottom: 5 }}>
+      <Text
+        style={{
+          color: 'white',
+          fontSize: 18,
+          marginHorizontal: 16,
+          marginBottom: 2,
         }}
-          scrollAnimationDuration={1000}
-          //onSnapToItem={(index) => console.log('Current index:', index)}
-          renderItem={({ item }) => <MovieCard item={item} handleClick={()=>handleClick(item)}/>}
-          mode="parallax"
-          modeConfig={{
-            parallaxScrollingScale: 0.9,
-            parallaxScrollingOffset: 40,
-          }}
-          style={{
-            width: SCREEN_WIDTH,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        />
-      </View>
-    
+      >
+        Trending
+      </Text>
+
+      <FlatList
+        data={data}
+        horizontal
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={CARD_WIDTH + 16} // Snap effect
+        decelerationRate="fast"
+        pagingEnabled
+        contentContainerStyle={{
+          alignItems: 'center',
+          paddingHorizontal: 16,
+        }}
+      />
+    </View>
   );
 };
 
-const MovieCard = ({ item ,handleClick}) => {
-  // Handle image loading error with a backup image
-  console.log("poster path" + item.poster_path)
-  const onImageError = (error) => {
-    console.log('Image loading error:', error);
-  };
-
+const MovieCard = ({ item, handleClick }) => {
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -76,21 +58,22 @@ const MovieCard = ({ item ,handleClick}) => {
       style={{
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
-        padding: 8,
+        marginRight: 16,
+        marginLeft:CARD_WIDTH*0.05,
       }}
     >
-      <Image
-        source={item.poster_path 
-          ? { uri: image500(item.poster_path) }
-          : require('../components/avengers.jpg')
+      <FastImage
+        source={
+          item.poster_path
+            ? { uri: image500(item.poster_path), priority: FastImage.priority.high }
+            : require('../components/avengers.jpg')
         }
-        onError={onImageError}
         style={{
           width: '100%',
           height: '100%',
           borderRadius: 16,
-          resizeMode: 'cover',
         }}
+        resizeMode={FastImage.resizeMode.cover}
       />
     </TouchableOpacity>
   );

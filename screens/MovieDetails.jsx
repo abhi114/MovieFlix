@@ -21,6 +21,7 @@ const MovieDetails = () => {
     const movieName = 'Avengers:Endgame'
     useEffect(()=>{
         //call the movie details api
+        console.log(item.id)
     },[item])
   return (
     <ScrollView contentContainerStyle={{paddingBottom:35,}} className={"flex-1 bg-neutral-900 h-full "+topMargin}>
@@ -78,7 +79,7 @@ const MovieDetails = () => {
         </View>
         <Cast navigation={navigation} cast={cast}/>
         {/* similar movies */}
-        <MovieList title="Similar Movies" hideSeeAll={true} data={similarMovies}/>
+        {/* <MovieList title="Similar Movies" hideSeeAll={true} data={similarMovies}/> */}
     </ScrollView>
   )
 }

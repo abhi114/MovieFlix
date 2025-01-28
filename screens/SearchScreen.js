@@ -11,11 +11,12 @@ const SearchScreen = () => {
     const [results, setResults] = useState([]);
     let movieName = "Avengers: Endgame";
     const [loading,setLoading]= useState(false);
+    consthandleSearch = value
     return (
         <SafeAreaView className="bg-neutral-800 flex-1">
             <View className="mx-4 mb-3 flex-row justify-between items-center border border-neutral-500 rounded-full mt-5">
                 <TextInput 
-                   
+                    onChange={handleSearch}
                     placeholder='Search Movie' 
                     placeholderTextColor={'lightgray'} 
                     className="pb-1 pl-6 flex-1 text-base font-semibold text-white tracking-wider"

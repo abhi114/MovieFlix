@@ -17,9 +17,9 @@ const HomeScreen = () => {
   const navigation = useNavigation();
 
   useEffect(()=>{
-    //getTrendingMovies();
-    //getUpcomingMovies();
-    //getTopRatedMovies();
+    getTrendingMovies();
+    getUpcomingMovies();
+    getTopRatedMovies();
     //console.log("hi")
   },[])
   const getTrendingMovies = async()=>{
@@ -30,12 +30,12 @@ const HomeScreen = () => {
       settrending(data.results);
 
     }
-    setLoading(false);
+    
   }
    const getUpcomingMovies = async()=>{
     //console.log("hit here")
     const data = await fetchUpcomingMovies();
-    console.log('got upcoming Movies' + JSON.stringify(data));
+    //console.log('got upcoming Movies' + JSON.stringify(data));
     if(data && data.results){
       setupcoming(data.results);
 
@@ -45,11 +45,12 @@ const HomeScreen = () => {
    const getTopRatedMovies = async()=>{
     //console.log("hit here")
     const data = await fetchTopRatedMovies();
-    console.log('got topRated Movies' + JSON.stringify(data));
+    //console.log('got topRated Movies' + JSON.stringify(data));
     if(data && data.results){
       settopRated(data.results);
 
     }
+    setLoading(false);
   }
   return (
     <View className="flex-1 bg-neutral-800">

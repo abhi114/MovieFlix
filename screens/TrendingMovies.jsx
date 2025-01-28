@@ -5,8 +5,10 @@ import { useNavigation } from '@react-navigation/native';
 import { image500 } from '../api/movieDb';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-const CARD_WIDTH = SCREEN_WIDTH * 0.7;
-const CARD_HEIGHT = SCREEN_HEIGHT * 0.5;
+const CARD_WIDTH = SCREEN_WIDTH * 0.7; // Card width is 70% of screen width
+const CARD_HEIGHT = SCREEN_HEIGHT * 0.5; // Card height is 50% of screen height
+const SPACING = 16; // Space between cards
+const SIDE_VISIBLE_CARD_WIDTH = (SCREEN_WIDTH - CARD_WIDTH) / 2 - (SPACING*3) ; // Visible part of the side cards
 
 const TrendingMovies = ({ data }) => {
   const navigation = useNavigation();
@@ -15,8 +17,12 @@ const TrendingMovies = ({ data }) => {
     navigation.navigate('MovieDetails', item);
   };
 
-  const renderItem = ({ item }) => (
-    <MovieCard item={item} handleClick={() => handleClick(item)} />
+  const renderItem = ({ item, index }) => (
+    <MovieCard
+      key={index}
+      item={item}
+      handleClick={() => handleClick(item)}
+    />
   );
 
   return (
@@ -26,7 +32,7 @@ const TrendingMovies = ({ data }) => {
           color: 'white',
           fontSize: 18,
           marginHorizontal: 16,
-          marginBottom: 2,
+          marginBottom: 5,
         }}
       >
         Trending
@@ -38,12 +44,19 @@ const TrendingMovies = ({ data }) => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         showsHorizontalScrollIndicator={false}
-        snapToInterval={CARD_WIDTH + 16} // Snap effect
+        snapToAlignment="center" // Align the center card to the center of the screen
+        
         decelerationRate="fast"
-        pagingEnabled
+        pagingEnabled={false} // Allows free scrolling
+        initialScrollIndex={1} // Start with the second item centered
+        getItemLayout={(data, index) => ({
+          length: CARD_WIDTH + SPACING,
+          offset: (CARD_WIDTH + SPACING) * index,
+          index,
+        })}
         contentContainerStyle={{
+          paddingHorizontal: SIDE_VISIBLE_CARD_WIDTH , // Add padding for visible side cards
           alignItems: 'center',
-          paddingHorizontal: 16,
         }}
       />
     </View>
@@ -58,8 +71,7 @@ const MovieCard = ({ item, handleClick }) => {
       style={{
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
-        marginRight: 16,
-        marginLeft:CARD_WIDTH*0.05,
+        marginRight: SPACING, // Space between cards
       }}
     >
       <FastImage

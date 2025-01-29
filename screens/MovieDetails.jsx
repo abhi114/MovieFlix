@@ -108,7 +108,7 @@ const MovieDetails = () => {
               source={
                 movie?.poster_path
                   ? { uri: image500(movie?.poster_path) }
-                  : require('../components/avengers.jpg')
+                  : require('../components/defaultMovie.jpg')
               }
               style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT * 0.68 }}
             />

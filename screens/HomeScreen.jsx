@@ -8,6 +8,7 @@ import MovieList from './MovieList';
 import { useNavigation } from '@react-navigation/native';
 import LoadingScreen from './LoadingScreen';
 import { fetchTopRatedMovies, fetchTrendingMovies, fetchUpcomingMovies } from '../api/movieDb';
+import SplashScreen from "react-native-splash-screen";
 const ios = Platform.OS === 'ios';
 const HomeScreen = () => {
   const [trending,settrending]= useState([]);
@@ -17,6 +18,9 @@ const HomeScreen = () => {
   const navigation = useNavigation();
 
   useEffect(()=>{
+    
+      SplashScreen.hide();
+      
     getTrendingMovies();
     getUpcomingMovies();
     getTopRatedMovies();

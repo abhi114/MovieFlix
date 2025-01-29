@@ -18,12 +18,12 @@ const Cast = ({cast,navigation}) => {
                     onPress={() =>
                       navigation.navigate('PersonScreen', {item:person})
                     }>
-                    <View className="overflow-hidden rounded-full h-20 w-20 items-center border border-neutral-500">
+                    <View className="overflow-hidden rounded-full h-20 w-20 items-center justify-center border border-neutral-500">
                       <Image
                         source={
                           person?.profile_path
                             ? {uri: image185(person?.profile_path)}
-                            : require('../components/rdj.jpg')
+                            : require('../components/defaultPerson.jpg')
                         }
                         className="rounded-2xl h-24 w-20"
                       />

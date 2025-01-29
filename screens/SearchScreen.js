@@ -1,22 +1,43 @@
 import { View, Text, Dimensions, SafeAreaView, TextInput, TouchableOpacity, ScrollView, TouchableWithoutFeedback, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { XMarkIcon } from 'react-native-heroicons/outline';
 import { useNavigation } from '@react-navigation/native';
 import LoadingScreen from './LoadingScreen';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-
+import {debounce} from 'lodash'
+import { image185, searchMovies } from '../api/movieDb';
 
 const SearchScreen = () => {
     const navigation = useNavigation();
     const [results, setResults] = useState([]);
     let movieName = "Avengers: Endgame";
     const [loading,setLoading]= useState(false);
-    consthandleSearch = value
+    const handleSearch = value =>{
+      if(value && value.length > 2){
+        setLoading(true);
+        searchMovies({
+          query:value,
+          include_adult:'true',
+          language: 'en-US',
+          page:'1'
+      }).then(data=>{
+        setLoading(false);
+        //console.log(data);
+        if(data && data.results) {
+          setResults(data.results);
+        }
+      })
+      }else{
+        setLoading(false);
+        setResults([])
+      }
+    };
+    const handleTextDebounce = useCallback(debounce(handleSearch,400),[]);
     return (
         <SafeAreaView className="bg-neutral-800 flex-1">
             <View className="mx-4 mb-3 flex-row justify-between items-center border border-neutral-500 rounded-full mt-5">
                 <TextInput 
-                    onChange={handleSearch}
+                    onChangeText={handleTextDebounce}
                     placeholder='Search Movie' 
                     placeholderTextColor={'lightgray'} 
                     className="pb-1 pl-6 flex-1 text-base font-semibold text-white tracking-wider"
@@ -44,13 +65,21 @@ const SearchScreen = () => {
                         <View className="space-y-2 mb-4">
                           <Image
                             className="rounded-3xl"
-                            source={require('../components/avengers.jpg')}
+                            source={
+                              item?.poster_path
+                                ? {uri: image185(item?.poster_path)}
+                                : require('../components/defaultMovie.jpg')
+                            }
                             style={{
                               width: SCREEN_WIDTH * 0.44,
                               height: SCREEN_HEIGHT * 0.3,
                             }}
                           />
-                          <Text className="text-neutral-300 ml-1">{movieName.length>20?movieName.slice(0,20)+ '...':movieName}</Text>
+                          <Text className="text-neutral-300 ml-1">
+                            {item?.title.length > 20
+                              ? item?.title.slice(0, 20) + '...'
+                              : item?.title}
+                          </Text>
                         </View>
                       </TouchableWithoutFeedback>
                     );

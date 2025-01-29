@@ -16,12 +16,29 @@ const searchMoviesEndpoint = `${apiBaseUrl}/search/movie?api_key=${apiKey}`
 export const image500 = path=> path? `https://image.tmdb.org/t/p/w500${path}`:null;
 export const image342 = path => path ? `https://image.tmdb.org/t/p/w342${path}` : null;
 export const image185 = path => path ? `https://image.tmdb.org/t/p/w185${path}` : null;
+
+const SearchapiCall = async (endpoint, params) => {
+  const options = {
+    method: 'GET',
+    url: endpoint,
+    params: params ? params : {},
+  };
+
+  try {
+    const response = await axios.request(options);
+    return response.data;
+  } catch (error) {
+    console.log('error: ', error);
+    return {};
+  }
+};
+
 const apiCall = async (endpoint, params = {}) => {
   try {
     // Convert params to query string
     const queryString = new URLSearchParams(params).toString();
     const urlWithParams = queryString ? `${endpoint}?${queryString}` : endpoint;
-    console.log(urlWithParams)
+   // console.log(urlWithParams)
     const options = {
       method: 'GET',
       headers: {
@@ -75,5 +92,5 @@ export const fetchPersonMovies = id => {
   return apiCall(personMoviesEndpoint(id));
 };
 export const searchMovies = params=>{
-    return apiCall(searchMoviesEndpoint,params);
+    return SearchapiCall(searchMoviesEndpoint, params);
 }

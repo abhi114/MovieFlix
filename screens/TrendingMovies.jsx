@@ -78,7 +78,7 @@ const MovieCard = ({ item, handleClick }) => {
         source={
           item.poster_path
             ? { uri: image500(item.poster_path), priority: FastImage.priority.high }
-            : require('../components/avengers.jpg')
+            : require('../components/defaultMovie.jpg')
         }
         style={{
           width: '100%',

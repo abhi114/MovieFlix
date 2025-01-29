@@ -33,7 +33,7 @@ const PersonScreen = () => {
      try {
        setLoading(true);
 
-       console.log(item);
+       //console.log(item);
 
        // Fetch person details and movies in parallel
        const [personDetails, personMovies] = await Promise.all([
@@ -42,7 +42,7 @@ const PersonScreen = () => {
        ]);
 
        if (personDetails) {
-         console.log('Person Details Data: ' + JSON.stringify(personDetails));
+         //console.log('Person Details Data: ' + JSON.stringify(personDetails));
          setPerson(personDetails);
        }
 
@@ -116,7 +116,7 @@ const PersonScreen = () => {
                 source={
                   person?.profile_path
                     ? {uri: image342(person?.profile_path)}
-                    : require('../components/rdj.jpg')
+                    : require('../components/defaultPerson.jpg')
                 }
                 style={{
                   height: SCREEN_HEIGHT * 0.43,
